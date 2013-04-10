@@ -1,0 +1,197 @@
+Converting the following to CNF. Example:
+NU  |A -> B
+N  L|A -> CDCD
+NU  |B -> -
+N   |B -> a
+N  L|C -> BDD
+NU  |D -> -
+N   |D -> b
+  M |S -> aA
+Removing Eps. Example:
+ U  |A -> B
+    |A -> CC
+   L|A -> CDCD
+    |A -> DD
+    |B -> a
+ U  |C -> B
+   L|C -> BDD
+    |C -> DD
+    |D -> b
+    |S -> a
+  M |S -> aA
+Removing Units. Example:
+    |A -> CC
+   L|A -> CDCD
+    |A -> DD
+    |A -> a
+    |B -> a
+   L|C -> BDD
+    |C -> DD
+    |C -> a
+    |D -> b
+    |S -> a
+  M |S -> aA
+Removing Mixed. Example:
+    |0 -> a
+    |A -> CC
+   L|A -> CDCD
+    |A -> DD
+    |A -> a
+    |B -> a
+   L|C -> BDD
+    |C -> DD
+    |C -> a
+    |D -> b
+    |S -> 0A
+    |S -> a
+Removing Long. Example:
+    |0 -> a
+    |1 -> DD
+    |2 -> D3
+    |3 -> CD
+    |A -> C2
+    |A -> CC
+    |A -> DD
+    |A -> a
+    |B -> a
+    |C -> B1
+    |C -> DD
+    |C -> a
+    |D -> b
+    |S -> 0A
+    |S -> a
+Conversion complete.
+
+
+Converting the following to PDA. Example:
+S|S -> aA
+ |A -> B
+ |A -> CDCD
+ |B -> -
+ |B -> a
+ |D -> -
+ |D -> b
+ |char -> BDD
+Finding nonterminals:  A,  D,  D,  A,  B,  char,  S,  B,  
+Finding terminals:  b,  -,  C,  C,  -,  a,  a,  
+Creating PDA.
+| Adding statement: (q, -, A), (q, B)
+| Adding statement: (q, -, D), (q, b)
+| Adding statement: (q, -, D), (q, -)
+| Adding statement: (q, -, A), (q, CDCD)
+| Adding statement: (q, -, B), (q, -)
+| Adding statement: (q, -, char), (q, BDD)
+| Adding statement: (q, -, S), (q, aA)
+| Adding statement: (q, -, B), (q, a)
+| Adding statement: (q, a, a), (q, -)
+| Adding statement: (q, C, C), (q, -)
+| Adding statement: (q, b, b), (q, -)
+| Adding statement: (q, -, -), (q, -)
+PDA complete. Result is: Example:
+(p, -, -), (q, S)
+(q, -, -), (q, -)
+(q, -, A), (q, B)
+(q, -, A), (q, CDCD)
+(q, -, B), (q, -)
+(q, -, B), (q, a)
+(q, -, D), (q, -)
+(q, -, D), (q, b)
+(q, -, S), (q, aA)
+(q, -, char), (q, BDD)
+(q, C, C), (q, -)
+(q, a, a), (q, -)
+(q, b, b), (q, -)
+
+
+Minimize the following. Example:
+NU|A -> B
+N |A -> CDCD
+NU|B -> -
+N |B -> a
+N |C -> BDD
+NU|D -> -
+N |D -> b
+  |S -> aA
+Removing Eps. Example:
+ U|A -> B
+  |A -> CC
+  |A -> CDCD
+  |A -> DD
+  |B -> a
+ U|C -> B
+  |C -> BDD
+  |C -> DD
+  |D -> b
+  |S -> a
+  |S -> aA
+Removing Units. Example:
+  |A -> CC
+  |A -> CDCD
+  |A -> DD
+  |A -> a
+  |B -> a
+  |C -> BDD
+  |C -> DD
+  |C -> a
+  |D -> b
+  |S -> a
+  |S -> aA
+Minimization complete.
+
+
+Minimizing the following DFSM:
+[I_] 1, a -> 2, b -> 4
+[_F] 2, a -> 3, b -> 6
+[__] 3, a -> 2, b -> 4
+[_F] 4, a -> 6, b -> 5
+[__] 5, a -> 2, b -> 4
+[__] 6, a -> 6, b -> 6
+
+STARTING PASS 1
+
+____1__2__3__4__5__6_
+1 |    X     X       
+2 | -     X     X  X 
+3 | -  -     X       
+4 | -  -  -     X  X 
+5 | -  -  -  -       
+6 | -  -  -  -  -    
+
+END OF PASS 1
+
+_: [(1, 3), (1, 5), (1, 6), (2, 4), (3, 5), (3, 6), (5, 6)]
+a: [(2, 2), (2, 2), (2, 6), (3, 6), (2, 2), (2, 6), (2, 6)]
+b: [(4, 4), (4, 4), (4, 6), (6, 5), (4, 4), (4, 6), (4, 6)]
+
+STARTING PASS 2
+
+____1__2__3__4__5__6_
+1 |    X     X     X 
+2 | -     X     X  X 
+3 | -  -     X     X 
+4 | -  -  -     X  X 
+5 | -  -  -  -     X 
+6 | -  -  -  -  -    
+
+END OF PASS 2
+
+_: [(1, 3), (1, 5), (2, 4), (3, 5)]
+a: [(2, 2), (2, 2), (3, 6), (2, 2)]
+b: [(4, 4), (4, 4), (6, 5), (4, 4)]
+
+STARTING PASS 3
+
+____1__2__3__4__5__6_
+1 |    X     X     X 
+2 | -     X  X  X  X 
+3 | -  -     X     X 
+4 | -  -  -     X  X 
+5 | -  -  -  -     X 
+6 | -  -  -  -  -    
+
+END OF PASS 3
+
+_: [(1, 3), (1, 5), (3, 5)]
+a: [(2, 2), (2, 2), (2, 2)]
+b: [(4, 4), (4, 4), (4, 4)]
+

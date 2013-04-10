@@ -91,6 +91,18 @@ class PDAStatement:
         self.goto = goto
         self.push = push
 
+    def get_value(self):
+        """
+        Gets the value of the statement.
+        """
+        return self.name, self.read, self.pop, self.goto, self.push
+
+    def accepts(self, read):
+        """
+        Returns whether the statement accepts the read value.
+        """
+        return self.read == read
+
     def __hash__(self):
         return hash(self.name)    \
                 ^ hash(self.read) \
@@ -110,7 +122,7 @@ class PDA:
         self.name = name
         self.statements = set()
         for arg in args:
-            self.add(*arg)
+            self.add(arg[0], arg[1], arg[2], arg[3], arg[4])
 
     def add(self, name, read, pop, goto, push):
         """
@@ -118,6 +130,15 @@ class PDA:
         """
         self.statements.add(PDAStatement( \
                 name, read, pop, goto, push))
+
+    def name_in(self, name):
+        """
+        Returns whether an node is in the PDA.
+        """
+        for statement in self.statements:
+            if statement.name == name:
+                return True
+        return False
 
     def __str__(self):
         string = self.name + ':'
@@ -137,13 +158,16 @@ def main():
             ('A', 'CDCD'), \
             ('B', EPS),    \
             ('B', 'a'),    \
-            ('C', 'BDD'),  \
+            ('char', 'BDD'),  \
             ('D', 'b'),    \
             ('D', EPS))
     print 'Converting the following to PDA. ' + str(grammar)
     cfgtopda(grammar, logging = True)
 
 def cfgtopda(grammar, logging = False):
+    """
+    Converts a context-free grammar to a push-down automata.
+    """
     nonterminals = set()
     terminals = set()
     _log(logging, 'Finding nonterminals: ', newline = False)
@@ -152,14 +176,19 @@ def cfgtopda(grammar, logging = False):
         _log(logging, statement.left + ', ', newline = False)
     _log(logging, '\nFinding terminals: ', newline = False)
     for statement in grammar.statements:
-        for c in statement.right:
-            if c not in nonterminals:
-                terminals.add(c)
-                _log(logging, c + ', ', newline = False)
+        for char in statement.right:
+            if char not in nonterminals:
+                terminals.add(char)
+                _log(logging, char + ', ', newline = False)
     _log(logging, '\nCreating PDA.')
     pda = PDA(grammar.name, ('p', EPS, EPS, 'q', grammar.start))
     for statement in grammar.statements:
-        newstatement = PDAStatement('q', EPS, statement.left, 'q', statement.right)
+        newstatement = PDAStatement( \
+                'q', \
+                EPS, \
+                statement.left, \
+                'q', \
+                statement.right)
         _log(logging, '| Adding statement: ' + str(newstatement))
         pda.statements.add(newstatement)
     for terminal in terminals:
