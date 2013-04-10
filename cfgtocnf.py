@@ -39,7 +39,7 @@ class Statement:
 
     def is_unit(self):
         """
-        Returns whether the statement has only a single non-terminal on the right.
+        Returns whether the statement has only a single rhs non-terminal.
         """
         return len(self.right) == 1 and self.right[0] not in self.alphabet
 
